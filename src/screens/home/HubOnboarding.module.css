@@ -1,0 +1,170 @@
+/* ფენა ეკრანის თავზე; თავისით დაჭერას არ იჭერს — მხოლოდ scrim და Tip */
+.root {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  --shift: calc(max(16px, calc(var(--safe-top) + 4px)) - 16px);
+}
+
+/* თეთრი scrim Nav Bar-სა და ტაბ ბარს შორის (~82%) */
+.scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.82);
+  opacity: 0;
+  pointer-events: auto;
+}
+
+/* ფრენისას Hub-ის აიქონი brand ნარინჯისფერია (tab-hub.svg როგორც mask) */
+.flyer {
+  position: absolute;
+  display: none;
+  width: 24px;
+  height: 24px;
+  background: var(--text-accent);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  will-change: transform;
+}
+
+.ring {
+  position: absolute;
+  border: 2px solid var(--text-accent);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* ---------- Tip bottom sheet (Figma 3178:96787) ---------- */
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: var(--radius-16) var(--radius-16) 0 0;
+  background: var(--layer-01);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(110%);
+  transition: transform 300ms ease-in;
+  pointer-events: auto;
+}
+
+.sheetOpen {
+  transform: translateY(0);
+  transition: transform 450ms cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+.noMotion,
+.noMotion.sheetOpen {
+  transition: none;
+}
+
+/* drag handle: 32×4, ზოლი 16px სიმაღლის არეში; header 32px */
+.handle {
+  width: 32px;
+  height: 4px;
+  margin: 6px 0 22px;
+  border-radius: var(--radius-full);
+  background: var(--border-01);
+}
+
+.badgeSlot {
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-16) var(--space-12);
+}
+
+.badge {
+  padding: 2px 4px;
+  border-radius: var(--radius-full);
+  background: var(--badge-feature-bg);
+  color: var(--badge-feature-text);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+  padding: 0 var(--space-16);
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.description {
+  color: var(--text-secondary);
+}
+
+/* Sticky bar: pt24 + container pt16 / pb16, safe-area ქვემოთ */
+.sticky {
+  width: 100%;
+  padding: calc(var(--space-24) + var(--space-16)) var(--space-16) calc(var(--space-16) + var(--safe-bottom));
+}
+
+.cta {
+  width: 100%;
+  min-width: 72px;
+  padding: 14px var(--space-16); /* py12 + label py2 */
+  border-radius: var(--radius-12);
+  background: var(--button-primary);
+  color: var(--text-white);
+  text-align: center;
+}
+
+/* ---------- სვაიპის მინიშნება (Figma 3178:102450): ცენტრი = შეხების წერტილი ---------- */
+.gesture {
+  position: absolute;
+  left: calc(50% - 1.5px);
+  top: calc(411px + var(--shift));
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+/* კვალი: გამჭვირვალედან 30% შავამდე, შეხების წერტილისკენ */
+.trail {
+  position: absolute;
+  left: -89px;
+  top: -20px;
+  width: 109px;
+  height: 40px;
+  border-radius: 40px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
+}
+
+.touchOuter {
+  position: absolute;
+  left: -27px;
+  top: -27px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1.35px rgba(0, 0, 0, 0.32);
+}
+
+.touchInner {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.hand {
+  position: absolute;
+  left: -14px;
+  top: -27px;
+  width: 77px;
+  height: 77px;
+}

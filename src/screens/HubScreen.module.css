@@ -1,0 +1,290 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--layer-01);
+  --bar-top: max(16px, calc(var(--safe-top) + 4px));
+  --bar-height: calc(var(--bar-top) + 60px);
+}
+
+.scroll {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Figma: კონტენტი y=88-დან, შიგნით pt16 px16 pb32 */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  padding: calc(var(--bar-height) + 12px + var(--space-16)) var(--page-padding)
+    calc(var(--space-32) + var(--safe-bottom));
+}
+
+/* ნავბარის ქვეშ ბუნდოვანი გრადიენტი (Figma „Blur", 88px) */
+.blur {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--bar-height) + 12px);
+  background: linear-gradient(to bottom, #ffffff 57.083%, rgba(255, 255, 255, 0.4));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  padding-top: var(--bar-top);
+}
+
+.barContent {
+  display: flex;
+  align-items: center;
+  padding: var(--space-8) var(--page-padding);
+}
+
+/* დახურვის ღილაკი აქტიურ ძიებაში ქრება, სერჩის ველი სრულ სიგანეზე იწელება */
+.closeSlot {
+  flex: none;
+  width: 52px; /* 44 + gap 8 */
+  overflow: hidden;
+  transition: width 260ms var(--nav-ease), opacity 200ms ease;
+}
+.isActive .closeSlot {
+  width: 0;
+  opacity: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 296px;
+  background: var(--layer-alpha-01);
+}
+
+.search {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: 0 var(--space-16);
+  border-radius: 100px;
+  background: var(--layer-alpha-01);
+  cursor: text;
+}
+.searchFilled {
+  padding-right: var(--space-8);
+}
+
+.searchInner {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.searchLeading {
+  flex: none;
+  display: flex;
+  width: 16px;
+  height: 16px;
+}
+
+.input {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  caret-color: var(--text-accent);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.input::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+.isActive .input::placeholder {
+  color: var(--text-placeholder);
+}
+.input::-webkit-search-cancel-button,
+.input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.clear {
+  flex: none;
+  display: flex;
+  padding: 7px;
+}
+
+/* სწრაფი ბმულები (Figma 3142:11150): ორი სვეტი, gap 16; ფილა 64, radius 18.286 */
+.quickLinks {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+}
+
+.quickLink {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+}
+
+.quickThumb {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18.286px;
+  background: var(--tile-bg);
+  overflow: hidden;
+}
+.quickThumb img {
+  object-fit: cover;
+}
+
+.quickLabel {
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--text-primary);
+}
+
+/* სექცია: სათაური + კონტენტი (gap 20) */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--text-primary);
+}
+
+/* პროდუქტების ბადე: 3 სვეტი, gap 6 / რიგებს შორის 20 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 6px;
+  row-gap: 20px;
+  align-items: start;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-16);
+  background: var(--tile-bg);
+  overflow: hidden;
+}
+
+.thumbImage {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.tileLabel {
+  width: 100%;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+/* NEW ბეჯი (Figma-დან დაექსპორტებული ჩრდილით: 50×22, ველები 10/6/10/14) */
+.newBadge {
+  position: absolute;
+  left: calc(50% - 35.84px);
+  top: -17px; /* -11 + ჩრდილის ზედა ველი 6px */
+  width: 70px;
+  height: 42px;
+  pointer-events: none;
+}
+
+/* „ხშირად მოძებნილი" სია */
+.linkRow {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-4);
+}
+
+.linkIcon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid var(--border-03);
+  border-radius: var(--radius-full);
+}
+
+.linkLabel {
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--text-primary);
+}
+
+.linkChevron {
+  flex: none;
+  margin: 12px 0;
+}
+
+/* Empty state */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.emptyText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.emptyDescription {
+  color: var(--text-secondary);
+}

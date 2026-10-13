@@ -1,0 +1,22 @@
+.card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-16);
+  background: var(--section-bg);
+  border-radius: var(--radius-24);
+}
+
+.padded {
+  padding: var(--space-16);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  color: var(--text-primary);
+  white-space: nowrap;
+}

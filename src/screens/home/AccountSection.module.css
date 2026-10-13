@@ -1,0 +1,196 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+/* ხელმისაწვდომი თანხა */
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: 0 var(--page-padding);
+  color: var(--text-primary);
+}
+
+.summaryTitles {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.eyeButton {
+  flex: none;
+  display: flex;
+  padding: var(--space-8);
+  border-radius: 100px;
+  background: var(--layer-alpha-02);
+}
+
+/* Hero / Account Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.cards {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-8);
+}
+
+.sideSpacer {
+  flex: none;
+  width: 8px;
+}
+
+.card {
+  flex: 1 1 0;
+  min-width: 280px;
+  min-height: 158px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-16);
+  border-radius: var(--radius-16);
+  background: var(--card-bg-blue);
+}
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.cardStack {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.cardImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 64px;
+  height: 40px;
+  object-fit: cover;
+  mask-size: 64px 40px;
+  -webkit-mask-size: 64px 40px;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 256px;
+  overflow: hidden;
+}
+
+.accountName {
+  color: var(--text-primary);
+}
+
+.bigAmount {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--text-primary);
+  white-space: pre;
+}
+
+.bigCurrency {
+  padding-right: var(--space-4);
+}
+
+.currencies {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: var(--space-4);
+}
+
+.currency {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-right: var(--space-2);
+}
+
+.currencyAmount {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  white-space: pre;
+}
+
+.symbolGel {
+  padding-right: var(--space-4);
+  text-align: right;
+}
+
+.symbol {
+  display: inline-block;
+  width: 10px;
+  margin-right: var(--space-4);
+  text-align: center;
+}
+
+.divider {
+  width: 0.5px;
+  height: 9px;
+  background: var(--border-alpha-02);
+  opacity: 0.3;
+}
+
+.peek {
+  flex: none;
+  width: 8px;
+  display: flex;
+  padding: var(--space-8) 0;
+}
+
+.peekCard {
+  flex: 1;
+  border-radius: var(--radius-12) 0 0 var(--radius-12);
+  background: var(--card-bg-gold);
+}
+
+/* სწრაფი მოქმედებები */
+.actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.action {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.actionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-24);
+  background: var(--button-secondary);
+}
+
+.actionLabel {
+  max-width: 109px;
+  width: 100%;
+  text-align: center;
+  color: var(--text-primary);
+}

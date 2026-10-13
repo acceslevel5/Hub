@@ -1,0 +1,431 @@
+/* Figma: pt24 / pb32, ელემენტებს შორის 16 */
+.page {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: var(--space-24) var(--page-padding) var(--space-32);
+  color: var(--text-primary);
+}
+
+.secondary {
+  color: var(--text-secondary);
+}
+
+/* ---------- Segmented Control ---------- */
+.segmented {
+  display: flex;
+  padding: var(--space-4);
+  border-radius: var(--radius-12);
+  background: var(--layer-alpha-01);
+}
+
+.segment {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 32px;
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-button-small);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.segmentActive {
+  background: var(--layer-01);
+  box-shadow: inset 0 0 0 0.5px var(--border-01);
+  color: var(--text-primary);
+}
+
+/* ---------- კალკულატორი ---------- */
+.calculator {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-24);
+}
+
+.calcTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+.input {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--layer-alpha-01);
+  cursor: text;
+}
+
+.inputField {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 40px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  caret-color: var(--text-accent);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.inputField::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+/* Currency Selector: დროშა 16 + კოდი, chevron */
+.selector {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 var(--space-16); /* Figma: Currency Selector 100px, შიგნით px16 */
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.optionCode {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.swap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+  background: var(--button-secondary-grey);
+}
+
+.rate {
+  width: 100%;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  white-space: nowrap;
+}
+
+.rateValue {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.rateOld {
+  color: var(--text-placeholder);
+}
+
+.primaryButton {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--space-16) 1px;
+  border-radius: var(--radius-12);
+  background: var(--button-primary);
+  color: var(--text-white);
+  text-align: center;
+}
+
+/* ---------- კურსები ---------- */
+.ratesTab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.search {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 0 var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--layer-alpha-01);
+  cursor: text;
+}
+
+.searchField {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 20px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  caret-color: var(--text-accent);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.searchField::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+.searchField::-webkit-search-cancel-button {
+  display: none;
+}
+
+.promo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 48px;
+  padding: 6px var(--space-16); /* Figma: ბლოკი 48px, ტექსტი 36px */
+  border-radius: var(--radius-12);
+  background: rgba(188, 143, 255, 0.24);
+}
+
+.promoIcon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: rgba(188, 143, 255, 0.24);
+}
+
+.promoText {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.promoInfo {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--layer-alpha-01);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+/* ბარათი: Figma-ში ჩარჩო შიგნით იხატება */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+  border-radius: var(--radius-12);
+  overflow: hidden;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border-01);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.cardHead {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-16);
+}
+
+.flag {
+  flex: none;
+  width: 40px;
+  height: 40px;
+}
+
+.cardTitles {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.cardOld .cardAmount {
+  color: rgba(1, 1, 1, 0.92);
+}
+
+.badge {
+  min-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-8) 1px;
+  border-radius: var(--radius-full);
+  background: var(--text-success);
+  color: #f7f7f8;
+}
+
+.favorite {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin: 4px 0;
+}
+.favorite img {
+  position: absolute;
+  inset: 0;
+}
+.favorite .star {
+  inset: 8px;
+}
+
+/* კურსების ცხრილი */
+.rates {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--space-8);
+}
+
+.rateRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-8);
+  border-radius: var(--radius-button-small);
+  white-space: nowrap;
+}
+
+.values {
+  display: flex;
+  gap: 40px;
+  text-align: center;
+}
+
+.rateHeader {
+  padding-top: 0;
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.rateBest {
+  background: var(--button-secondary);
+}
+.rateBest .rateLabel {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+.rateBest .values {
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+}
+
+.rateStandard {
+  color: var(--text-secondary);
+}
+.rateStandard .rateLabel {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.rateStandard .values {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.line {
+  width: calc(100% - 32px);
+  height: 1px;
+  background: rgba(1, 1, 1, 0.08);
+}
+
+.official {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-16);
+}
+
+.officialLabel {
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.officialValue {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+}
+
+/* ძველი სტილის ბარათები (GBP, UAH, TRY, CAD): Regular 11/14 ლეიბლები, 14/18 მნიშვნელობები */
+.cardOld .rateHeader,
+.cardOld .rateLabel,
+.cardOld .officialLabel {
+  color: rgba(1, 1, 1, 0.68);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 400;
+  font-feature-settings: 'dlig' 1, 'hlig' 1;
+}
+.cardOld .rateHeader {
+  padding-bottom: var(--space-8);
+}
+.cardOld .rateBest .values {
+  color: rgba(1, 1, 1, 0.92);
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+.cardOld .rateStandard .values {
+  color: rgba(1, 1, 1, 0.68);
+  line-height: 18px;
+}
+.cardOld .line {
+  width: 100%;
+}
+.cardOld .officialValue {
+  gap: var(--space-8);
+  color: #191a1a;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+.cardOld .officialValue img {
+  margin: 1.5px 0;
+}

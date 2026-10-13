@@ -1,0 +1,64 @@
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  background: var(--layer-01);
+  will-change: transform;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+/* შემომავალი ეკრანი მარჯვნიდან */
+.pushIn {
+  z-index: 2;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
+  animation: slideInRight var(--nav-duration) var(--nav-ease) both;
+}
+/* ქვედა ეკრანი ოდნავ მარცხნივ და ჩაბნელებული */
+.pushUnder {
+  pointer-events: none;
+  animation: parallaxOut var(--nav-duration) var(--nav-ease) both;
+}
+.popIn {
+  animation: parallaxIn var(--nav-duration) var(--nav-ease) both;
+}
+.popOut {
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
+  animation: slideOutRight var(--nav-duration) var(--nav-ease) both;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(calc(var(--dir, 1) * 100%)); }
+  to { transform: translateX(0); }
+}
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(var(--dir, 1) * 100%)); }
+}
+@keyframes parallaxOut {
+  from { transform: translateX(0); filter: brightness(1); }
+  to { transform: translateX(calc(var(--dir, 1) * -30%)); filter: brightness(0.92); }
+}
+@keyframes parallaxIn {
+  from { transform: translateX(calc(var(--dir, 1) * -30%)); filter: brightness(0.92); }
+  to { transform: translateX(0); filter: brightness(1); }
+}
+
+/* მარცხნიდან შემოსვლა (სარკისებური მიმართულება) */
+.fromLeft {
+  --dir: -1;
+}
+.fromLeft.pushIn,
+.fromLeft.popOut {
+  box-shadow: 8px 0 24px rgba(0, 0, 0, 0.08);
+}

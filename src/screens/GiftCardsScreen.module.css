@@ -1,0 +1,226 @@
+/* Figma: ნავბარი 68, კონტენტი y=76-დან, ტულბარამდე 34px */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  padding: var(--space-8) 0 34px;
+  color: var(--text-primary);
+}
+
+.secondary {
+  color: var(--text-secondary);
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.searchWrap {
+  padding: 0 var(--page-padding);
+}
+
+.search {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 0 var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--layer-alpha-01);
+}
+
+/* Figma-ში ჩარჩო (stroke) ბარათის შიგნით იხატება და ზომას არ ზრდის — იგივე ::after-ით */
+.category::after,
+.promo::after,
+.store::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border-03);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* კატეგორიები: ჰორიზონტალური სქროლი */
+.categories {
+  align-items: flex-start;
+  gap: var(--space-8);
+  height: 121px;
+  padding: 0 var(--page-padding);
+}
+
+.category {
+  flex: none;
+  width: 148px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+  padding: var(--space-16);
+  border-radius: var(--radius-12);
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+}
+
+.categoryImage {
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.categoryTitle {
+  min-height: 44px; /* Figma: სათაური + ცარიელი ხაზი */
+  color: #1f1f1f;
+}
+
+/* პოპულარულები */
+.promotions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding-bottom: var(--space-12);
+}
+
+.sectionTitle {
+  padding: 0 var(--page-padding);
+}
+
+.promoRow {
+  align-items: flex-start;
+  gap: var(--space-8);
+  padding: 0 var(--page-padding);
+}
+
+.promo {
+  flex: none;
+  width: 311px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-12);
+  background: var(--layer-01);
+  overflow: hidden;
+  position: relative;
+}
+
+.promoImage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-12) var(--radius-12) 0 0;
+}
+
+.promoFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-16);
+}
+
+.promoFooterCompact {
+  padding: var(--space-8) var(--space-8) var(--space-4);
+}
+
+.promoInfo {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.primaryButton {
+  flex: none;
+  min-height: 32px;
+  padding: 0 var(--space-16) 1px;
+  border-radius: 100px;
+  background: var(--button-primary);
+  color: var(--text-white);
+  white-space: nowrap;
+}
+
+/* ყველა მაღაზია */
+.stores {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+
+.storesHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--page-padding);
+}
+.storesHeader h2 {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.segmented {
+  flex: none;
+  display: flex;
+  padding: var(--space-4);
+  border-radius: var(--radius-12);
+  background: var(--layer-alpha-01);
+}
+
+.segment {
+  display: flex;
+  padding: var(--space-8);
+  border-radius: var(--radius-button-small);
+}
+
+.segmentActive {
+  background: var(--layer-01);
+  box-shadow: inset 0 0 0 0.5px var(--border-01);
+}
+
+.storeGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: 0 var(--page-padding);
+}
+
+.storeRow {
+  display: flex;
+  align-items: stretch;
+}
+
+.store {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+  padding: var(--space-16);
+  border-radius: var(--radius-12);
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+}
+
+.storeLogo {
+  position: relative;
+  width: 80px;
+  height: 60px;
+  overflow: hidden;
+}
+.storeLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.storeText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}

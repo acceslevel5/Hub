@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="40" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id=".Card Mask" clip-path="url(#clip0_0_1869)">
+<path id="Mask" d="M0 1.92C0 0.859612 0.863933 0 1.92965 0H62.0704C63.1361 0 64 0.859613 64 1.92V38.08C64 39.1404 63.1361 40 62.0704 40H1.92965C0.863934 40 0 39.1404 0 38.08V1.92Z" fill="#D9D9D9"/>
+</g>
+<defs>
+<clipPath id="clip0_0_1869">
+<rect width="64" height="40" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,0 +1,100 @@
+/* დიზაინ ტოკენები — Figma „Bog-2.0" ფაილიდან. ყველა ფერი/ზომა მხოლოდ აქ. */
+:root {
+  /* text */
+  --text-primary: #1b1c1d;
+  --text-secondary: #515457;
+  --text-helper: #6c7075;
+  --text-disabled: #aaadb0;
+  --text-accent: #ff5c0a;
+  --text-success: #198038;
+  --text-white: #ffffff;
+
+  /* layers / backgrounds */
+  --layer-01: #ffffff;
+  --layer-alpha-01: rgba(108, 112, 117, 0.06);
+  --layer-alpha-02: rgba(108, 112, 117, 0.1);
+  --bg-page-end: #f2f1f6;
+  --section-bg: rgba(255, 255, 255, 0.9);
+  --card-bg-blue: #f0f5fa;
+  --card-bg-gold: #fff4e0;
+  --status-error-01: #fff1f1;
+  --status-success-01: #dffbe7;
+  --button-primary: #ff5c0a;
+  --badge-feature-bg: #ede5ff;
+  --badge-feature-text: #6929c4;
+  --avatar-bg: #e7d6ff;
+  --avatar-text: #5c3696;
+
+  /* buttons */
+  --button-secondary: rgba(255, 92, 10, 0.08);
+  --button-secondary-grey: rgba(108, 112, 117, 0.1);
+
+  /* borders */
+  --border-01: #d7d9db;
+  --border-03: #e5e6e7;
+  --border-selected: #ff5c0a;
+  --border-alpha-02: rgba(108, 112, 117, 0.22);
+  --divider: rgba(108, 112, 117, 0.12);
+
+  /* spacing */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --page-padding: 16px;
+
+  /* radius */
+  --radius-button-small: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-full: 10000px;
+
+  /* typography: font-family */
+  --font-bog: 'BOG', system-ui, -apple-system, sans-serif;
+
+  /* layout */
+  --design-width: 375px;
+  --max-app-width: 430px;
+  --navbar-height: 44px;
+  --toolbar-height: 50px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* motion (iOS push/pop) */
+  --nav-duration: 420ms;
+  --nav-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ტიპოგრაფიის სტილები (size / line-height / weight) */
+.t-heading-large   { font-size: 32px; line-height: 44px; font-weight: 600; }
+.t-subtitle-large  { font-size: 17px; line-height: 20px; font-weight: 600; letter-spacing: -0.1px; }
+.t-h5-bold         { font-size: 16px; line-height: 20px; font-weight: 700; }
+.t-label-large     { font-size: 16px; line-height: 20px; font-weight: 600; }
+.t-label-medium    { font-size: 14px; line-height: 20px; font-weight: 600; }
+.t-label-small     { font-size: 12px; line-height: 16px; font-weight: 600; }
+.t-label-xsmall    { font-size: 11px; line-height: 16px; font-weight: 500; }
+.t-section-title   { font-size: 16px; line-height: normal; font-weight: 600; }
+.t-list-body       { font-size: 15px; line-height: 20px; font-weight: 500; }
+.t-list-value      { font-size: 14px; line-height: 18px; font-weight: 600; }
+.t-body-medium     { font-size: 14px; line-height: 20px; font-weight: 500; }
+.t-body-small      { font-size: 12px; line-height: 18px; font-weight: 500; }
+.t-avatar-initials { font-size: 15.56px; line-height: 22.222px; font-weight: 600; }
+.t-caption-regular { font-size: 11px; line-height: normal; font-weight: 400; }
+.t-cta             { font-size: 14px; line-height: normal; font-weight: 600; }
+.t-tab-bar         { font-size: 10px; line-height: normal; font-weight: 500; }
+
+/* Hub */
+:root {
+  --text-placeholder: #989ba0;
+  --tile-bg: rgba(162, 169, 176, 0.08);
+}
+.t-widget-title { font-size: 17px; line-height: 20px; font-weight: 700; letter-spacing: -0.1px; }
+.t-tile-label   { font-size: 12px; line-height: 15px; font-weight: 600; }
+
+/* სასაჩუქრე ბარათები */
+.t-label-large-22 { font-size: 16px; line-height: 22px; font-weight: 600; }

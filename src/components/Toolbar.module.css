@@ -1,0 +1,102 @@
+.toolbar {
+  position: relative;
+  z-index: 10;
+  flex: none;
+  background: var(--layer-01);
+  /* ქვედა დაშორება 12px; თუ ტელეფონის safe-area (home indicator) მეტია, ის გამოიყენება */
+  padding-bottom: max(12px, var(--safe-bottom));
+  --tb-morph: 500ms ease; /* ონბორდინგი: Hub ტაბის დაკეცვა 500ms (docs/onboarding-spec.md) */
+}
+
+.inert {
+  pointer-events: none;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.tabs {
+  display: flex;
+  height: var(--toolbar-height);
+}
+
+.tab {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 50px;
+  overflow: hidden;
+  transition: flex-grow var(--tb-morph), opacity var(--tb-morph);
+}
+
+/* „ჰაბი" ტაბი მხოლოდ legacy ვერსიაში ჩანს; ისე იკუმშება, რომ დანარჩენები სივრცეს ავსებენ */
+.legacyTab {
+  flex-grow: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.legacy .legacyTab {
+  flex-grow: 1;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* გადარიცხვა: legacy-ში მრგვალ ფონზე, წარწერის გარეშე (Figma .iOS Toolbar Center Icons) */
+.centerBg {
+  position: absolute;
+  left: calc(50% + 0.5px);
+  top: 2px;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  border-radius: 50%;
+  background: rgba(108, 112, 117, 0.1);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity var(--tb-morph), transform var(--tb-morph);
+}
+.legacy .centerBg {
+  opacity: 1;
+  transform: none;
+}
+.centerTab .icon {
+  transition: top var(--tb-morph);
+}
+.legacy .centerTab .icon {
+  top: 12px;
+}
+.centerTab .label {
+  transition: opacity var(--tb-morph);
+}
+.legacy .centerTab .label {
+  opacity: 0;
+}
+
+.icon {
+  position: absolute;
+  top: 8px;
+  left: calc(50% + 0.5px);
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+}
+
+.label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 35px;
+  bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  text-align: center;
+}
+
