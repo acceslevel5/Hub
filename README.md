@@ -40,7 +40,7 @@ Vite-ის `base` არის `'./'` და ნავიგაცია hash-�
 
 Tip-ის ტექსტის ვარიანტი `copy` პარამეტრით აირჩიეთ (default `a`):
 
-- `?onboarding=on&copy=a#/`: „ჰაბი ახლა აქ არის"
+- `?onboarding=on&copy=a#/`: „ჰაბი და ძიება ახალ ადგილას"
 - `?onboarding=on&copy=b#/`: „ძიება და ჰაბი ერთ ადგილას"
 - `?onboarding=on&copy=c#/`: „ჰაბი ზემოთ ავიდა"
 
