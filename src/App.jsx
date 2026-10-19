@@ -1,4 +1,5 @@
 import { Navigator } from './router/Navigator'
+import PreloginScreen from './screens/PreloginScreen'
 import HomeScreen from './screens/HomeScreen'
 import TransactionsScreen from './screens/TransactionsScreen'
 import HubScreen from './screens/HubScreen'
@@ -7,6 +8,7 @@ import CurrencyRatesScreen from './screens/CurrencyRatesScreen'
 
 // ახალი ეკრანის დასამატებლად: შექმენი screens/XScreen.jsx და დაამატე აქ
 const routes = {
+  '/login': PreloginScreen,
   '/': HomeScreen,
   '/transactions': TransactionsScreen,
   '/hub': HubScreen,
@@ -15,5 +17,5 @@ const routes = {
 }
 
 export default function App() {
-  return <Navigator routes={routes} initialPath="/" />
+  return <Navigator routes={routes} initialPath="/login" />
 }

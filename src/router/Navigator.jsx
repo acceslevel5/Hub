@@ -6,7 +6,8 @@ import { useHiddenReset } from './useHiddenReset'
  * მარტივი stack-ნავიგატორი hash-ისთვის (GitHub Pages).
  * - navigate(path) → push ანიმაცია, back() → pop ანიმაცია (iOS-ის მსგავსად)
  * - ყველა ეკრანი სტეკში mounted რჩება, ამიტომ უკან დაბრუნებისას სქროლი და მდგომარეობა ინახება
- * - reset() → მთავარ გვერდზე დაბრუნება და ყველა მდგომარეობის გასუფთავება (remount)
+ * - navigate(path, { replace: true }) → push ანიმაცია, შემდეგ წინა ეკრანები სტეკიდან ქრება (მაგ. პრელოგინი → მთავარი)
+ * - reset() → საწყის ეკრანზე დაბრუნება და ყველა მდგომარეობის გასუფთავება (remount)
  */
 
 const NavContext = createContext(null)
@@ -30,13 +31,13 @@ export function Navigator({ routes, initialPath = '/' }) {
     window.history.replaceState({ depth: 0 }, '', '#' + initialPath)
   }, [initialPath])
 
-  const navigate = useCallback((path, { from = 'right' } = {}) => {
+  const navigate = useCallback((path, { from = 'right', replace = false } = {}) => {
     if (animRef.current) return // ანიმაციის დროს მეორე გადასვლა (მაგ. ორმაგი სვაიპი) იგნორირდება
-    const depth = stackRef.current.length
-    window.history.pushState({ depth, from }, '', '#' + path)
+    const depth = replace ? 0 : stackRef.current.length
+    window.history[replace ? 'replaceState' : 'pushState']({ depth, from }, '', '#' + path)
     const next = entry(path, from)
     setStack((s) => [...s, next])
-    setAnim({ type: 'push', key: next.key, from })
+    setAnim({ type: 'push', key: next.key, from, replace })
   }, [])
 
   const back = useCallback(() => {
@@ -71,7 +72,11 @@ export function Navigator({ routes, initialPath = '/' }) {
   const [rootEl, setRootEl] = useState(null)
   useHiddenReset(rootEl, reset)
 
-  const endAnim = () => setAnim(null)
+  const endAnim = () => {
+    // replace: ანიმაციის შემდეგ სტეკში მხოლოდ ახალი ეკრანი რჩება
+    if (animRef.current?.replace) setStack((s) => s.slice(-1))
+    setAnim(null)
+  }
 
   // fallback: თუ animationend არ მოვიდა (მაგ. ტაბი ფონშია), ანიმაცია მაინც დასრულდეს
   useEffect(() => {
