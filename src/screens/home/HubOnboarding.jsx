@@ -13,7 +13,7 @@ import { ONBOARDING_COPY, ONBOARDING_EYEBROW } from '../../config/onboarding'
  * ფრენის კოორდინატები რეალური DOM-იდან (data-onb ატრიბუტები), არა hardcode-ით.
  */
 // პაუზა გვერდის გახსნიდან ტურის დაწყებამდე, რომ იუზერმა ჯერ ძველი განლაგება შეამჩნიოს
-const START_DELAY = 1500
+const START_DELAY = 600
 
 const T = {
   scrim: 700,

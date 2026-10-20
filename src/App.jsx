@@ -5,6 +5,7 @@ import TransactionsScreen from './screens/TransactionsScreen'
 import HubScreen from './screens/HubScreen'
 import GiftCardsScreen from './screens/GiftCardsScreen'
 import CurrencyRatesScreen from './screens/CurrencyRatesScreen'
+import { onboardingParams } from './config/onboarding'
 
 // ახალი ეკრანის დასამატებლად: შექმენი screens/XScreen.jsx და დაამატე აქ
 const routes = {
@@ -16,6 +17,9 @@ const routes = {
   '/currency-rates': CurrencyRatesScreen,
 }
 
+// პრელოგინი მხოლოდ ტურიან ვერსიაში (?onboarding=on), რომ ტური შესვლამდე არ დაიწყოს
+const initialPath = onboardingParams.enabled ? '/login' : '/'
+
 export default function App() {
-  return <Navigator routes={routes} initialPath="/login" />
+  return <Navigator routes={routes} initialPath={initialPath} />
 }
