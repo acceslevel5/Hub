@@ -33,16 +33,19 @@ const pathFromUrl = (initialPath) => {
   return screen === 'home' ? '/' : '/' + screen
 }
 
-// ლინკით გახსნილი ეკრანის სტეკი: [ეკრანი] ან [მთავარი, ეკრანი]
-const stackFromUrl = (routes, initialPath, enterFrom) => {
+// ლინკით გახსნილი ეკრანის სტეკი: [ეკრანი] ან [მთავარი, ეკრანი]; rootPaths — ეკრანები, რომლებსაც მთავარი ქვეშ არ სჭირდება
+const stackFromUrl = (routes, initialPath, enterFrom, rootPaths) => {
   const path = pathFromUrl(initialPath)
   if (!routes[path] || path === initialPath) return [entry(initialPath)]
-  if (path === '/') return [entry('/')]
+  if (path === '/' || rootPaths.includes(path)) return [entry(path)]
   return [entry('/'), entry(path, enterFrom[path])]
 }
 
-export function Navigator({ routes, initialPath = '/', enterFrom = {} }) {
-  const [stack, setStack] = useState(() => stackFromUrl(routes, initialPath, enterFrom))
+// Useberry ახალ ეკრანს (NAVIGATION) DOM-ში ნოუდის დამატებისას ამოწმებს; replaceUrl-ის შემდეგ უხილავ comment-ს ვამატებთ
+const pingUseberry = () => document.body.appendChild(document.createComment('screen')).remove()
+
+export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths = [] }) {
+  const [stack, setStack] = useState(() => stackFromUrl(routes, initialPath, enterFrom, rootPaths))
   const [anim, setAnim] = useState(null) // { type: 'push' | 'pop', key, leaving? }
   const stackRef = useRef(stack)
   stackRef.current = stack
@@ -67,6 +70,15 @@ export function Navigator({ routes, initialPath = '/', enterFrom = {} }) {
     setStack((s) => [...s, next])
     setAnim({ type: 'push', key: next.key, from, replace })
   }, [initialPath])
+
+  // მხოლოდ მიმდინარე ეკრანის URL იცვლება, სტეკი/ეკრანი იგივე რჩება (მაგ. ტურის დასრულების შემდეგ: home-tour → home)
+  const replaceUrl = useCallback(
+    (path) => {
+      window.history.replaceState(window.history.state, '', urlFor(path, initialPath))
+      pingUseberry()
+    },
+    [initialPath],
+  )
 
   const back = useCallback(() => {
     if (stackRef.current.length > 1 && !animRef.current) window.history.back()
@@ -118,7 +130,7 @@ export function Navigator({ routes, initialPath = '/', enterFrom = {} }) {
   if (anim?.type === 'pop' && anim.leaving) layers.push({ ...anim.leaving, index: stack.length, leaving: true })
 
   return (
-    <NavContext.Provider value={{ navigate, back, reset, canGoBack: stack.length > 1 }}>
+    <NavContext.Provider value={{ navigate, replaceUrl, back, reset, canGoBack: stack.length > 1 }}>
       <div className={styles.root} ref={setRootEl}>
         {layers.map((l) => {
           const Screen = routes[l.path] || routes['/']

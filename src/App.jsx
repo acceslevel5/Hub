@@ -11,6 +11,7 @@ import { onboardingParams } from './config/onboarding'
 const routes = {
   '/login': PreloginScreen,
   '/': HomeScreen,
+  '/home-tour': HomeTourScreen,
   '/transactions': TransactionsScreen,
   '/hub': HubScreen,
   '/gift-cards': GiftCardsScreen,
@@ -20,9 +21,15 @@ const routes = {
 // პრელოგინი მხოლოდ ტურიან ვერსიაში (?onboarding=on), რომ ტური შესვლამდე არ დაიწყოს
 const initialPath = onboardingParams.enabled ? '/login' : '/'
 
+// მთავარი გვერდი ტურით (?screen=home-tour). ტურის შემდეგ URL ?screen=home ხდება, რომ Useberry-მ
+// ტურის დროს და ტურის შემდეგ გაკეთებული ქლიქები ცალ-ცალკე ეკრანებად დაყოს
+function HomeTourScreen() {
+  return <HomeScreen tour />
+}
+
 // ლინკით პირდაპირ გახსნისას: რომელი მხრიდან შემოდის ეკრანი (უკან სვაიპი/ანიმაცია ამით განისაზღვრება)
 const enterFrom = { '/hub': 'left' }
 
 export default function App() {
-  return <Navigator routes={routes} initialPath={initialPath} enterFrom={enterFrom} />
+  return <Navigator routes={routes} initialPath={initialPath} enterFrom={enterFrom} rootPaths={['/home-tour']} />
 }

@@ -37,7 +37,7 @@ export default function PreloginScreen() {
   useEffect(() => () => timers.current.forEach(clearTimeout), [])
   const later = (ms, fn) => timers.current.push(setTimeout(fn, ms))
 
-  const enterApp = () => navigate('/', { replace: true })
+  const enterApp = () => navigate('/home-tour', { replace: true })
 
   const startFaceId = () => {
     if (entering) return

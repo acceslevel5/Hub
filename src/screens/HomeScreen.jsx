@@ -13,11 +13,10 @@ import { useNav } from '../router/Navigator'
 import { onboardingParams } from '../config/onboarding'
 
 /*
- * ონბორდინგის მდგომარეობა (ჩართულია მხოლოდ ?onboarding=on-ით).
+ * ონბორდინგის მდგომარეობა (ჩართულია მხოლოდ /home-tour ეკრანზე, რომელზეც ?onboarding=on-ის პრელოგინი გადადის).
  * reset-ზე მთავარი გვერდი ხელახლა იხატება, ამიტომ ონბორდინგიც თავიდან ითამაშებს.
  */
-function useOnboardingState() {
-  const enabled = onboardingParams.enabled
+function useOnboardingState(enabled) {
   const [active, setActive] = useState(enabled) // ფენა ეკრანზეა
   const [blocking, setBlocking] = useState(enabled) // ნავბარი/ტაბ ბარი არ რეაგირებს
   const [navLegacy, setNavLegacy] = useState(enabled)
@@ -27,9 +26,9 @@ function useOnboardingState() {
 }
 
 /* მთავარი გვერდი — Figma 3063:80339 */
-export default function HomeScreen() {
-  const { navigate } = useNav()
-  const onb = useOnboardingState()
+export default function HomeScreen({ tour = false }) {
+  const { navigate, replaceUrl } = useNav()
+  const onb = useOnboardingState(tour)
   const openStatement = () => navigate('/transactions')
   // Figma prototype: მენიუ/ძიების ღილაკი ან მარცხნიდან მარჯვნივ სვაიპი → Hub (მარცხნიდან)
   const openHub = useCallback(() => navigate('/hub', { from: 'left' }), [navigate])
@@ -50,6 +49,7 @@ export default function HomeScreen() {
             onSwipeHint={onb.setHubPeek}
             onFinish={(thenOpenHub) => {
               onb.setActive(false)
+              replaceUrl('/') // ტურის შემდეგ ქლიქები Useberry-ში ჩვეულებრივ მთავარ გვერდზე ჩაიწერება
               if (thenOpenHub) openHub()
             }}
           />
