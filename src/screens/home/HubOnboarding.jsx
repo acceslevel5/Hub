@@ -9,7 +9,7 @@ import { ONBOARDING_COPY, ONBOARDING_EYEBROW } from '../../config/onboarding'
  * ეკრანის (Screen) თავზე ფენაა; ნავბარს/ტაბ ბარს მშობელი მართავს callback-ებით:
  *   onToolbarCollapse — Hub ტაბი იკეცება, onLand — ნავბარი ახალ განლაგებაზე გადადის,
  *   onTipClosed — ჰინტი დაიხურა (აპი ჩვეულებრივად მუშაობს), onSwipeHint — სვაიპის მინიშნება იწყება/მთავრდება,
- *   onFinish(openHub) — ონბორდინგი დასრულდა.
+ *   onCta — CTA-ზე დაჭერა (Tip-ის დახურვამდე), onFinish(openHub) — ონბორდინგი დასრულდა.
  * ფრენის კოორდინატები რეალური DOM-იდან (data-onb ატრიბუტები), არა hardcode-ით.
  */
 // პაუზა გვერდის გახსნიდან ტურის დაწყებამდე, რომ იუზერმა ჯერ ძველი განლაგება შეამჩნიოს
@@ -28,11 +28,12 @@ const T = {
   sheetOut: 300,
   swipeHint: 1100,
 }
+const TIP_CLOSE_DELAY = 80
 const FLIGHT_EASING = 'cubic-bezier(.45,0,.2,1)'
 
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-export default function HubOnboarding({ copyKey = 'a', onToolbarCollapse, onLand, onTipClosed, onSwipeHint, onFinish }) {
+export default function HubOnboarding({ copyKey = 'a', onToolbarCollapse, onLand, onTipClosed, onSwipeHint, onCta, onFinish }) {
   const copy = ONBOARDING_COPY[copyKey] || ONBOARDING_COPY.a
   const rootRef = useRef(null)
   const scrimRef = useRef(null)
@@ -194,6 +195,13 @@ export default function HubOnboarding({ copyKey = 'a', onToolbarCollapse, onLand
   const closeTip = () => {
     if (closing) return
     setClosing(true)
+    // ჯერ URL იცვლება (Useberry ტურის ეკრანს მისი დატოვების მომენტში იღებს — ღია Tip-ით, სადაც ქლიქი მოხდა),
+    // Tip კი ოდნავ მოგვიანებით იხურება
+    onCta?.()
+    later(TIP_CLOSE_DELAY, closeTipNow)
+  }
+
+  const closeTipNow = () => {
     setTipOpen(false)
     scrimRef.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: T.sheetOut, fill: 'forwards' })
     onTipClosed()

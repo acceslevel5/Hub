@@ -4,6 +4,7 @@
   inset: 0;
   z-index: 20;
   pointer-events: none;
+  overflow: hidden; /* დახურული Tip (translateY 110%) ეკრანის ქვემოთ არ უნდა „ეკიდოს" (Useberry-ის სქრინშოტზე ჩანდა) */
   --shift: calc(max(16px, calc(var(--safe-top) + 4px)) - 16px);
 }
 

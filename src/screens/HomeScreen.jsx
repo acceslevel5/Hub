@@ -47,9 +47,10 @@ export default function HomeScreen({ tour = false }) {
             onLand={() => onb.setNavLegacy(false)}
             onTipClosed={() => onb.setBlocking(false)}
             onSwipeHint={onb.setHubPeek}
+            onCta={() => replaceUrl('/')} // ტური დასრულდა: შემდეგი ქლიქები Useberry-ში ჩვეულებრივ მთავარ გვერდზე
             onFinish={(thenOpenHub) => {
               onb.setActive(false)
-              replaceUrl('/') // ტურის შემდეგ ქლიქები Useberry-ში ჩვეულებრივ მთავარ გვერდზე ჩაიწერება
+              replaceUrl('/') // reduced motion / სხვა გზით დასრულებისას (თუ URL უკვე home-ა, არაფერი იცვლება)
               if (thenOpenHub) openHub()
             }}
           />
