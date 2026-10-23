@@ -3,7 +3,8 @@ import styles from './Navigator.module.css'
 import { useHiddenReset } from './useHiddenReset'
 
 /*
- * მარტივი stack-ნავიგატორი hash-ისთვის (GitHub Pages).
+ * მარტივი stack-ნავიგატორი GitHub Pages-ისთვის. ეკრანი URL-ის ?screen= პარამეტრშია და არა hash-ში:
+ *   Useberry ქლიქებს ეკრანებად URL-ით ჰყოფს და hash-ს უგულებელყოფს (ჰითმეფები ყველა ეკრანისთვის ერთ სქრინზე ჯდებოდა).
  * - navigate(path) → push ანიმაცია, back() → pop ანიმაცია (iOS-ის მსგავსად)
  * - ყველა ეკრანი სტეკში mounted რჩება, ამიტომ უკან დაბრუნებისას სქროლი და მდგომარეობა ინახება
  * - navigate(path, { replace: true }) → push ანიმაცია, შემდეგ წინა ეკრანები სტეკიდან ქრება (მაგ. პრელოგინი → მთავარი)
@@ -16,7 +17,15 @@ export const useNav = () => useContext(NavContext)
 let uid = 0
 // from: 'right' (iOS push) ან 'left' (მაგ. Hub, რომელიც მარცხნიდან შემოდის)
 const entry = (path, from = 'right') => ({ key: ++uid, path, from })
-const hashPath = () => window.location.hash.replace(/^#/, '') || '/'
+const currentPath = () => '/' + (new URLSearchParams(window.location.search).get('screen') || '')
+// '/' → ?screen-ის გარეშე, '/hub' → ?screen=hub; სხვა პარამეტრები (onboarding, copy) რჩება, ძველი #/ ქრება
+const urlFor = (path) => {
+  const params = new URLSearchParams(window.location.search)
+  if (path === '/') params.delete('screen')
+  else params.set('screen', path.slice(1))
+  const query = params.toString()
+  return window.location.pathname + (query ? '?' + query : '')
+}
 
 export function Navigator({ routes, initialPath = '/' }) {
   const [stack, setStack] = useState(() => [entry(initialPath)])
@@ -28,13 +37,13 @@ export function Navigator({ routes, initialPath = '/' }) {
 
   // პირველი ჩატვირთვა ყოველთვის მთავარი გვერდიდან
   useEffect(() => {
-    window.history.replaceState({ depth: 0 }, '', '#' + initialPath)
+    window.history.replaceState({ depth: 0 }, '', urlFor(initialPath))
   }, [initialPath])
 
   const navigate = useCallback((path, { from = 'right', replace = false } = {}) => {
     if (animRef.current) return // ანიმაციის დროს მეორე გადასვლა (მაგ. ორმაგი სვაიპი) იგნორირდება
     const depth = replace ? 0 : stackRef.current.length
-    window.history[replace ? 'replaceState' : 'pushState']({ depth, from }, '', '#' + path)
+    window.history[replace ? 'replaceState' : 'pushState']({ depth, from }, '', urlFor(path))
     const next = entry(path, from)
     setStack((s) => [...s, next])
     setAnim({ type: 'push', key: next.key, from, replace })
@@ -45,7 +54,7 @@ export function Navigator({ routes, initialPath = '/' }) {
   }, [])
 
   const reset = useCallback(() => {
-    window.history.replaceState({ depth: 0 }, '', '#' + initialPath)
+    window.history.replaceState({ depth: 0 }, '', urlFor(initialPath))
     setAnim(null)
     setStack([entry(initialPath)])
   }, [initialPath])
@@ -60,7 +69,7 @@ export function Navigator({ routes, initialPath = '/' }) {
         setStack(s.slice(0, Math.max(depth, 0) + 1))
         setAnim({ type: 'pop', key: s[Math.max(depth, 0)].key, leaving, from: leaving.from })
       } else if (depth > top) {
-        const next = entry(hashPath(), e.state?.from)
+        const next = entry(currentPath(), e.state?.from)
         setStack([...s, next])
         setAnim({ type: 'push', key: next.key, from: next.from })
       }

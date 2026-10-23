@@ -22,7 +22,7 @@ npm run dev
 3. ყოველი `push` `main`-ზე ავტომატურად გაუშვებს `.github/workflows/deploy.yml`-ს: ის ააწყობს აპს და გამოაქვეყნებს მას.
 4. მისამართი იქნება `https://<user>.github.io/<repo>/` (ასევე ჩანს Actions-ის ლოგში და Settings → Pages-ში).
 
-Vite-ის `base` არის `'./'` და ნავიგაცია hash-ზეა (`#/transactions`), ამიტომ რეპოს სახელის კონფიგურაციაში ჩაწერა საჭირო არ არის.
+Vite-ის `base` არის `'./'`, ამიტომ რეპოს სახელის კონფიგურაციაში ჩაწერა საჭირო არ არის. მიმდინარე ეკრანი URL-ის `?screen=` პარამეტრშია (მაგ. `?screen=hub`), რომ Useberry-მ ჰითმეფები ეკრანების მიხედვით დაყოს (hash-ს ის უგულებელყოფს).
 
 ## ტელეფონზე აპივით გახსნა
 
@@ -35,14 +35,14 @@ Vite-ის `base` არის `'./'` და ნავიგაცია hash-�
 
 ონბორდინგი („Hub გადავიდა ზედა მარცხენა კუთხეში") სცენარის პასუხს ამხელს, ამიტომ ორ პირობას ცალ-ცალკე ლინკით ტესტავთ:
 
-- **ონბორდინგის გარეშე** (default): `https://<user>.github.io/<repo>/#/`
-- **ონბორდინგით**: `https://<user>.github.io/<repo>/?onboarding=on#/`
+- **ონბორდინგის გარეშე** (default): `https://<user>.github.io/<repo>/`
+- **ონბორდინგით**: `https://<user>.github.io/<repo>/?onboarding=on`
 
 Tip-ის ტექსტის ვარიანტი `copy` პარამეტრით აირჩიეთ (default `a`):
 
-- `?onboarding=on&copy=a#/`: „ჰაბი და ძიება ახალ ადგილას"
-- `?onboarding=on&copy=b#/`: „ძიება და ჰაბი ერთ ადგილას"
-- `?onboarding=on&copy=c#/`: „ჰაბი ზემოთ ავიდა"
+- `?onboarding=on&copy=a`: „ჰაბი და ძიება ახალ ადგილას"
+- `?onboarding=on&copy=b`: „ძიება და ჰაბი ერთ ადგილას"
+- `?onboarding=on&copy=c`: „ჰაბი ზემოთ ავიდა"
 
 ტექსტები `src/config/onboarding.js`-ში იცვლება.
 
