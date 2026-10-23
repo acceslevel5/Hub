@@ -25,3 +25,27 @@
   inset: 0;
   pointer-events: none;
 }
+
+/* აქტიური ეკრანი (Navigator-ის nav-flow ფენა): კონტენტი დოკუმენტის ნაკადშია და სქროლავს window,
+   რომ Useberry-მ ქლიქის პოზიცია და სრული სქრინშოტი სწორად აიღოს */
+:global(.nav-flow) > .screen:not(.locked) {
+  position: relative;
+  inset: auto;
+  min-height: 100dvh;
+}
+:global(.nav-flow) > .screen:not(.locked) > .scroll {
+  flex: 1 0 auto;
+  display: flex; /* min-height: 100%-ის ნაცვლად: შიგთავსს (flex: 1) ეკრანის ბოლომდე გაწელვა შეუძლია */
+  flex-direction: column;
+  overflow: visible;
+}
+:global(.nav-flow) > .screen:not(.locked) > header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+:global(.nav-flow) > .screen:not(.locked) > nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}

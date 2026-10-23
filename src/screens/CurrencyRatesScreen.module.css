@@ -1,6 +1,7 @@
 /* Figma: pt24 / pb32, ელემენტებს შორის 16 */
 .page {
   min-height: 100%;
+  flex: 1 0 auto; /* window-ით სქროლისას (Screen.module.css) ეკრანის ბოლომდე იწელება */
   display: flex;
   flex-direction: column;
   gap: var(--space-16);

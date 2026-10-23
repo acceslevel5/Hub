@@ -25,7 +25,7 @@ export function useHiddenReset(rootEl, onReset) {
     const onDown = (e) => {
       const rect = rootEl.getBoundingClientRect()
       const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
+      const y = e.clientY - Math.max(rect.top, 0) // გვერდი შეიძლება ჩამოსქროლილი იყოს: ზონა ეკრანის (viewport) ზედა კუთხეა
       if (x > ZONE_X || y > ZONE_Y) return
       start = { x: e.clientX, y: e.clientY }
       timer = setTimeout(() => {

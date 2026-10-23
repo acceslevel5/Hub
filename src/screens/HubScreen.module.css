@@ -28,6 +28,32 @@
     calc(var(--space-32) + var(--safe-bottom));
 }
 
+/* ნავბარი + blur: ნულოვანი სიმაღლის ფენა ზემოთ (აქტიურ ეკრანზე sticky) */
+.top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  z-index: 2;
+}
+
+/* აქტიური ეკრანი (Navigator-ის nav-flow ფენა): სქროლავს window, რომ Useberry-მ სრული სქრინშოტი აიღოს */
+:global(.nav-flow) > .screen {
+  position: relative;
+  inset: auto;
+  min-height: 100dvh;
+}
+:global(.nav-flow) > .screen > .top {
+  position: sticky;
+}
+:global(.nav-flow) > .screen > .scroll {
+  position: relative;
+  inset: auto;
+  min-height: 100dvh;
+  overflow: visible;
+}
+
 /* ნავბარის ქვეშ ბუნდოვანი გრადიენტი (Figma „Blur", 88px) */
 .blur {
   position: absolute;

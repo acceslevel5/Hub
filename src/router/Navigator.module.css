@@ -1,15 +1,26 @@
 .root {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
+  position: relative;
+  min-height: 100dvh;
+  overflow-x: clip;
   background: #000;
 }
 
+/* არააქტიური ეკრანი: ერთი viewport-ის სიმაღლე, საკუთარი შიდა სქროლით; --layer-top = window-ის სქროლი გადასვლისას */
 .layer {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: var(--layer-top, 0px);
+  height: 100dvh;
   background: var(--layer-01);
-  will-change: transform;
+}
+
+/* აქტიური ეკრანი დოკუმენტის ნაკადშია: მისი სიმაღლე = გვერდის სიმაღლე, სქროლავს window */
+.flow {
+  position: relative;
+  top: 0;
+  height: auto;
+  min-height: 100dvh;
 }
 
 .hidden {

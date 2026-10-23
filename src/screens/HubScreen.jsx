@@ -172,61 +172,64 @@ export default function HubScreen() {
 
   return (
     <div className={`${styles.screen} ${active ? styles.isActive : ''}`} ref={setScreenEl}>
-      <main className={styles.scroll} onTouchMove={hideKeyboard}>
+      {/* ნულოვანი სიმაღლის sticky კონტეინერი: ნავბარი კონტენტის თავზე რჩება, როცა window სქროლავს */}
+      <div className={styles.top}>
+        <div className={styles.blur} aria-hidden="true" />
+        <header className={styles.bar}>
+          <div className={styles.barContent}>
+            <div className={styles.closeSlot}>
+              <button type="button" className={`${styles.closeButton} pressable`} aria-label="დახურვა" onClick={back}>
+                <img src={closeIcon} width="24" height="24" alt="" />
+              </button>
+            </div>
+            <div
+              className={`${styles.search} ${hasQuery ? styles.searchFilled : ''}`}
+              onClick={(e) => e.target === e.currentTarget && inputRef.current?.focus()}
+            >
+              <span className={styles.searchInner}>
+                {active ? (
+                  <button type="button" className={`${styles.searchLeading} pressable`} aria-label="ძიებიდან გასვლა" onClick={exitSearch}>
+                    <img src={chevronLeftIcon} width="16" height="16" alt="" />
+                  </button>
+                ) : (
+                  <img className={styles.searchLeading} src={searchIcon} width="16" height="16" alt="" />
+                )}
+                <input
+                  ref={inputRef}
+                  className={`t-body-medium ${styles.input}`}
+                  type="search"
+                  inputMode="search"
+                  enterKeyHint="search"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  placeholder="ძებნა"
+                  value={query}
+                  onFocus={() => setActive(true)}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && inputRef.current?.blur()}
+                />
+              </span>
+              {hasQuery && (
+                <button
+                  type="button"
+                  className={`${styles.clear} pressable`}
+                  aria-label="გასუფთავება"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={clearQuery}
+                >
+                  <img src={clearIcon} width="10" height="10" alt="" />
+                </button>
+              )}
+            </div>
+          </div>
+        </header>
+      </div>
+      <main className={styles.scroll} onTouchMove={hideKeyboard} data-scroll>
         <div className={styles.content}>{content}</div>
       </main>
 
-      <div className={styles.blur} aria-hidden="true" />
-      <header className={styles.bar}>
-        <div className={styles.barContent}>
-          <div className={styles.closeSlot}>
-            <button type="button" className={`${styles.closeButton} pressable`} aria-label="დახურვა" onClick={back}>
-              <img src={closeIcon} width="24" height="24" alt="" />
-            </button>
-          </div>
-          <div
-            className={`${styles.search} ${hasQuery ? styles.searchFilled : ''}`}
-            onClick={(e) => e.target === e.currentTarget && inputRef.current?.focus()}
-          >
-            <span className={styles.searchInner}>
-              {active ? (
-                <button type="button" className={`${styles.searchLeading} pressable`} aria-label="ძიებიდან გასვლა" onClick={exitSearch}>
-                  <img src={chevronLeftIcon} width="16" height="16" alt="" />
-                </button>
-              ) : (
-                <img className={styles.searchLeading} src={searchIcon} width="16" height="16" alt="" />
-              )}
-              <input
-                ref={inputRef}
-                className={`t-body-medium ${styles.input}`}
-                type="search"
-                inputMode="search"
-                enterKeyHint="search"
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                placeholder="ძებნა"
-                value={query}
-                onFocus={() => setActive(true)}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && inputRef.current?.blur()}
-              />
-            </span>
-            {hasQuery && (
-              <button
-                type="button"
-                className={`${styles.clear} pressable`}
-                aria-label="გასუფთავება"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={clearQuery}
-              >
-                <img src={clearIcon} width="10" height="10" alt="" />
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
     </div>
   )
 }
