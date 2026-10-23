@@ -15,6 +15,27 @@
     <link rel="preload" href="./fonts/BOG-Medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./fonts/BOG-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
     <title>BOG</title>
+    <script>
+      // ახალი deploy-ის შემდეგ ქეშიდან გახსნილი ძველი გვერდი ძველ (უკვე წაშლილ) JS-ს ითხოვს → თეთრი ეკრანი.
+      // ასეთ შემთხვევაში გვერდი ერთხელ განახლდება (reload სერვერიდან ახალ ვერსიას იღებს)
+      window.addEventListener(
+        'error',
+        function (e) {
+          var el = e.target
+          if (!el || el.tagName !== 'SCRIPT' || el.src.indexOf('/assets/') === -1) return
+          if (sessionStorage.getItem('bog-reloaded')) return
+          sessionStorage.setItem('bog-reloaded', '1')
+          location.reload()
+        },
+        true,
+      )
+      window.addEventListener('load', function () {
+        // აპი თუ ჩაიტვირთა, შემდეგი deploy-ისთვის ისევ შეიძლება ერთი reload (უსასრულო ციკლის გარეშე)
+        setTimeout(function () {
+          if (document.querySelector('[data-key]')) sessionStorage.removeItem('bog-reloaded')
+        }, 3000)
+      })
+    </script>
   </head>
   <body>
     <div id="root"></div>
