@@ -138,31 +138,35 @@ export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths
   }, [topKey, titles, initialPath])
 
   /*
-   * სქროლი: აქტიური ეკრანი window-ით სქროლავს, დანარჩენები — შიდა [data-scroll] ბლოკით.
-   * ეკრანის შეცვლისას თითოეულის სქროლი ინახება და აღდგება, რომ push/pop ანიმაციაში არაფერი ხტოდეს.
+   * სქროლი: ერთი ეკრანი (flow) დოკუმენტის ნაკადშია და window-ით სქროლავს, დანარჩენები — ერთი viewport-ის
+   * ჩარჩოში, შიდა [data-scroll] ბლოკით. გადასვლის ანიმაციისას flow-ში ძველი ეკრანი რჩება (push-ზე ქვედა,
+   * pop-ზე გამავალი) და ახალი ეკრანი ჩარჩოში შემოდის; ანიმაციის ბოლოს ადგილებს ცვლიან.
+   * Useberry ეკრანის სურათს მისი დატოვების მომენტში იღებს — ასე ის ყოველთვის სრული სიმაღლისაა.
    */
+  const flowKey = !anim ? topKey : anim.type === 'pop' ? anim.leaving?.key ?? topKey : stack[topIndex - 1]?.key ?? topKey
   const scrollMap = useRef({})
-  const topKeyRef = useRef(topKey)
+  const flowKeyRef = useRef(flowKey)
   useEffect(() => {
     window.history.scrollRestoration = 'manual' // სქროლს Navigator აღადგენს, არა ბრაუზერი
-    const onScroll = () => (scrollMap.current[topKeyRef.current] = window.scrollY)
+    const onScroll = () => (scrollMap.current[flowKeyRef.current] = window.scrollY)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
   useLayoutEffect(() => {
-    if (topKeyRef.current === topKey && rootEl?.dataset.ready) return
-    topKeyRef.current = topKey
     if (!rootEl) return
+    const flowChanged = flowKeyRef.current !== flowKey || !rootEl.dataset.ready
+    flowKeyRef.current = flowKey
     rootEl.dataset.ready = '1'
-    const y = scrollMap.current[topKey] || 0
+    const y = scrollMap.current[flowKey] || 0
+    // ჩარჩოში მყოფი ეკრანები viewport-ის ადგილას (top = window-ის სქროლი), საკუთარი შიდა სქროლით
     rootEl.querySelectorAll(':scope > [data-key]').forEach((layer) => {
-      if (Number(layer.dataset.key) === topKey) return
+      if (Number(layer.dataset.key) === flowKey) return
       layer.style.setProperty('--layer-top', y + 'px')
       const inner = layer.querySelector('[data-scroll]')
       if (inner) inner.scrollTop = scrollMap.current[layer.dataset.key] || 0
     })
-    window.scrollTo(0, y)
-  }, [topKey, rootEl])
+    if (flowChanged) window.scrollTo(0, y)
+  }, [flowKey, topKey, anim, rootEl])
 
   const layers = stack.map((e, i) => ({ ...e, index: i }))
   if (anim?.type === 'pop' && anim.leaving) layers.push({ ...anim.leaving, index: stack.length, leaving: true })
@@ -173,8 +177,8 @@ export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths
         {layers.map((l) => {
           const Screen = routes[l.path] || routes['/']
           let cls = styles.layer + (anim?.from === 'left' ? ' ' + styles.fromLeft : '')
-          // აქტიური ეკრანი დოკუმენტის ნაკადშია (nav-flow — Screen-ის sticky ნავბარ/ტაბ ბარისთვის)
-          if (l.index === topIndex && !l.leaving) cls += ' ' + styles.flow + ' nav-flow'
+          // flow ეკრანი დოკუმენტის ნაკადშია (nav-flow — Screen-ის sticky ნავბარ/ტაბ ბარისთვის)
+          if (l.key === flowKey) cls += ' ' + styles.flow + ' nav-flow'
           if (l.leaving) cls += ' ' + styles.popOut
           else if (l.index === topIndex) {
             if (anim?.type === 'push' && anim.key === l.key) cls += ' ' + styles.pushIn
