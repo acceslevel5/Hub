@@ -16,19 +16,21 @@ import { onboardingParams } from '../config/onboarding'
  * ონბორდინგის მდგომარეობა (ჩართულია მხოლოდ /home-tour ეკრანზე, რომელზეც ?onboarding=on-ის პრელოგინი გადადის).
  * reset-ზე მთავარი გვერდი ხელახლა იხატება, ამიტომ ონბორდინგიც თავიდან ითამაშებს.
  */
-function useOnboardingState(enabled) {
+function useOnboardingState(enabled, instant) {
   const [active, setActive] = useState(enabled) // ფენა ეკრანზეა
   const [blocking, setBlocking] = useState(enabled) // ნავბარი/ტაბ ბარი არ რეაგირებს
-  const [navLegacy, setNavLegacy] = useState(enabled)
-  const [toolbarLegacy, setToolbarLegacy] = useState(enabled)
+  // instant: ტური პირდაპირ Tip-ის მდგომარეობით (ნავბარი/ტაბ ბარი უკვე ახალ განლაგებაზე)
+  const [navLegacy, setNavLegacy] = useState(enabled && !instant)
+  const [toolbarLegacy, setToolbarLegacy] = useState(enabled && !instant)
   const [hubPeek, setHubPeek] = useState(false)
   return { active, setActive, blocking, setBlocking, navLegacy, setNavLegacy, toolbarLegacy, setToolbarLegacy, hubPeek, setHubPeek }
 }
 
 /* მთავარი გვერდი — Figma 3063:80339 */
-export default function HomeScreen({ tour = false }) {
+/* tourInstant — ?screen=home-tour ლინკით გახსნისას (Useberry სქრინშოტი): ტური ანიმაციის გარეშე, ღია Tip-ით */
+export default function HomeScreen({ tour = false, tourInstant = false }) {
   const { navigate, replaceUrl } = useNav()
-  const onb = useOnboardingState(tour)
+  const onb = useOnboardingState(tour, tourInstant)
   const openStatement = () => navigate('/transactions')
   // Figma prototype: მენიუ/ძიების ღილაკი ან მარცხნიდან მარჯვნივ სვაიპი → Hub (მარცხნიდან)
   const openHub = useCallback(() => navigate('/hub', { from: 'left' }), [navigate])
@@ -43,6 +45,7 @@ export default function HomeScreen({ tour = false }) {
         onb.active && (
           <HubOnboarding
             copyKey={onboardingParams.copyKey}
+            instant={tourInstant}
             onToolbarCollapse={() => onb.setToolbarLegacy(false)}
             onLand={() => onb.setNavLegacy(false)}
             onTipClosed={() => onb.setBlocking(false)}

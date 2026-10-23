@@ -33,7 +33,7 @@ const FLIGHT_EASING = 'cubic-bezier(.45,0,.2,1)'
 
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-export default function HubOnboarding({ copyKey = 'a', onToolbarCollapse, onLand, onTipClosed, onSwipeHint, onCta, onFinish }) {
+export default function HubOnboarding({ copyKey = 'a', instant = false, onToolbarCollapse, onLand, onTipClosed, onSwipeHint, onCta, onFinish }) {
   const copy = ONBOARDING_COPY[copyKey] || ONBOARDING_COPY.a
   const rootRef = useRef(null)
   const scrimRef = useRef(null)
@@ -44,7 +44,7 @@ export default function HubOnboarding({ copyKey = 'a', onToolbarCollapse, onLand
   const [scrimBox, setScrimBox] = useState(null)
   const [tipOpen, setTipOpen] = useState(false)
   const [closing, setClosing] = useState(false)
-  const reduced = useRef(reducedMotion())
+  const reduced = useRef(reducedMotion() || instant)
 
   const later = (ms, fn) => timers.current.push(setTimeout(fn, ms))
 
@@ -65,6 +65,12 @@ export default function HubOnboarding({ copyKey = 'a', onToolbarCollapse, onLand
       top: header.getBoundingClientRect().bottom - sRect.top,
       bottom: sRect.bottom - toolbar.getBoundingClientRect().top,
     })
+
+    // ლინკით გახსნა (Useberry სქრინშოტი): ანიმაციების გარეშე, პირდაპირ ღია Tip-ით
+    if (instant) {
+      setTipOpen(true)
+      return
+    }
 
     const fadeScrim = (to) =>
       scrimRef.current?.animate([{ opacity: to ? 0 : 1 }, { opacity: to ? 1 : 0 }], { duration: 400, fill: 'forwards' })
@@ -244,7 +250,7 @@ export default function HubOnboarding({ copyKey = 'a', onToolbarCollapse, onLand
 
   return (
     <div className={styles.root} ref={rootRef} aria-live="polite">
-      {scrimBox && <div ref={scrimRef} className={styles.scrim} style={scrimBox} />}
+      {scrimBox && <div ref={scrimRef} className={styles.scrim} style={instant ? { ...scrimBox, opacity: 1 } : scrimBox} />}
       <span ref={flyerRef} className={styles.flyer} style={{ maskImage: `url("${hubIcon}")`, WebkitMaskImage: `url("${hubIcon}")` }} />
       <span ref={ringRef} className={styles.ring} />
 

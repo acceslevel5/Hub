@@ -18,7 +18,7 @@ export const useNav = () => useContext(NavContext)
 
 let uid = 0
 // from: 'right' (iOS push) ან 'left' (მაგ. Hub, რომელიც მარცხნიდან შემოდის)
-const entry = (path, from = 'right') => ({ key: ++uid, path, from })
+const entry = (path, from = 'right', deepLinked = false) => ({ key: ++uid, path, from, deepLinked })
 // საწყისი ეკრანი → ?screen-ის გარეშე, '/' → ?screen=home, '/hub' → ?screen=hub; სხვა პარამეტრები (onboarding, copy) რჩება, ძველი #/ ქრება
 const urlFor = (path, initialPath) => {
   const params = new URLSearchParams(window.location.search)
@@ -37,8 +37,9 @@ const pathFromUrl = (initialPath) => {
 const stackFromUrl = (routes, initialPath, enterFrom, rootPaths) => {
   const path = pathFromUrl(initialPath)
   if (!routes[path] || path === initialPath) return [entry(initialPath)]
-  if (path === '/' || rootPaths.includes(path)) return [entry(path)]
-  return [entry('/'), entry(path, enterFrom[path])]
+  // deepLinked: ეკრანი პირდაპირ ლინკით გაიხსნა (მაგ. Useberry სქრინშოტისთვის) — ანიმაციების გარეშე, საბოლოო მდგომარეობით
+  if (path === '/' || rootPaths.includes(path)) return [entry(path, 'right', true)]
+  return [entry('/'), entry(path, enterFrom[path], true)]
 }
 
 // Useberry ახალ ეკრანს (NAVIGATION) მხოლოდ DOM-ში ნოუდის დამატებისას ამოწმებს; URL-ის ყოველი ცვლილების შემდეგ უხილავ comment-ს ვამატებთ
@@ -196,7 +197,7 @@ export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths
               onAnimationEnd={(e) => e.target === e.currentTarget && endAnim()}
               aria-hidden={l.index !== topIndex || l.leaving}
             >
-              <Screen />
+              <Screen deepLinked={l.deepLinked} />
             </div>
           )
         })}

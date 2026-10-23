@@ -34,8 +34,8 @@ const initialPath = onboardingParams.enabled ? '/login' : '/'
 
 // მთავარი გვერდი ტურით (?screen=home-tour). ტურის შემდეგ URL ?screen=home ხდება, რომ Useberry-მ
 // ტურის დროს და ტურის შემდეგ გაკეთებული ქლიქები ცალ-ცალკე ეკრანებად დაყოს
-function HomeTourScreen() {
-  return <HomeScreen tour />
+function HomeTourScreen({ deepLinked }) {
+  return <HomeScreen tour tourInstant={deepLinked} />
 }
 
 // ლინკით პირდაპირ გახსნისას: რომელი მხრიდან შემოდის ეკრანი (უკან სვაიპი/ანიმაცია ამით განისაზღვრება)
