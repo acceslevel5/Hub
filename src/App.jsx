@@ -20,6 +20,9 @@ const routes = {
 // პრელოგინი მხოლოდ ტურიან ვერსიაში (?onboarding=on), რომ ტური შესვლამდე არ დაიწყოს
 const initialPath = onboardingParams.enabled ? '/login' : '/'
 
+// ლინკით პირდაპირ გახსნისას: რომელი მხრიდან შემოდის ეკრანი (უკან სვაიპი/ანიმაცია ამით განისაზღვრება)
+const enterFrom = { '/hub': 'left' }
+
 export default function App() {
-  return <Navigator routes={routes} initialPath={initialPath} />
+  return <Navigator routes={routes} initialPath={initialPath} enterFrom={enterFrom} />
 }

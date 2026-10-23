@@ -9,6 +9,8 @@ import { useHiddenReset } from './useHiddenReset'
  * - ყველა ეკრანი სტეკში mounted რჩება, ამიტომ უკან დაბრუნებისას სქროლი და მდგომარეობა ინახება
  * - navigate(path, { replace: true }) → push ანიმაცია, შემდეგ წინა ეკრანები სტეკიდან ქრება (მაგ. პრელოგინი → მთავარი)
  * - reset() → საწყის ეკრანზე დაბრუნება და ყველა მდგომარეობის გასუფთავება (remount)
+ * - ?screen=X ლინკით ჩატვირთვა ამ ეკრანს ხსნის (მთავარი გვერდი ქვეშ რჩება „უკან"-ისთვის):
+ *   Useberry ჰითმეფის სქრინშოტისთვის თითოეული ეკრანის URL-ს თავიდან ტვირთავს
  */
 
 const NavContext = createContext(null)
@@ -17,44 +19,61 @@ export const useNav = () => useContext(NavContext)
 let uid = 0
 // from: 'right' (iOS push) ან 'left' (მაგ. Hub, რომელიც მარცხნიდან შემოდის)
 const entry = (path, from = 'right') => ({ key: ++uid, path, from })
-const currentPath = () => '/' + (new URLSearchParams(window.location.search).get('screen') || '')
-// '/' → ?screen-ის გარეშე, '/hub' → ?screen=hub; სხვა პარამეტრები (onboarding, copy) რჩება, ძველი #/ ქრება
-const urlFor = (path) => {
+// საწყისი ეკრანი → ?screen-ის გარეშე, '/' → ?screen=home, '/hub' → ?screen=hub; სხვა პარამეტრები (onboarding, copy) რჩება, ძველი #/ ქრება
+const urlFor = (path, initialPath) => {
   const params = new URLSearchParams(window.location.search)
-  if (path === '/') params.delete('screen')
-  else params.set('screen', path.slice(1))
+  if (path === initialPath) params.delete('screen')
+  else params.set('screen', path === '/' ? 'home' : path.slice(1))
   const query = params.toString()
   return window.location.pathname + (query ? '?' + query : '')
 }
+const pathFromUrl = (initialPath) => {
+  const screen = new URLSearchParams(window.location.search).get('screen')
+  if (!screen) return initialPath
+  return screen === 'home' ? '/' : '/' + screen
+}
 
-export function Navigator({ routes, initialPath = '/' }) {
-  const [stack, setStack] = useState(() => [entry(initialPath)])
+// ლინკით გახსნილი ეკრანის სტეკი: [ეკრანი] ან [მთავარი, ეკრანი]
+const stackFromUrl = (routes, initialPath, enterFrom) => {
+  const path = pathFromUrl(initialPath)
+  if (!routes[path] || path === initialPath) return [entry(initialPath)]
+  if (path === '/') return [entry('/')]
+  return [entry('/'), entry(path, enterFrom[path])]
+}
+
+export function Navigator({ routes, initialPath = '/', enterFrom = {} }) {
+  const [stack, setStack] = useState(() => stackFromUrl(routes, initialPath, enterFrom))
   const [anim, setAnim] = useState(null) // { type: 'push' | 'pop', key, leaving? }
   const stackRef = useRef(stack)
   stackRef.current = stack
   const animRef = useRef(anim)
   animRef.current = anim
 
-  // პირველი ჩატვირთვა ყოველთვის მთავარი გვერდიდან
+  // ისტორია ჩატვირთულ სტეკს შეესაბამება, რომ „უკან" მუშაობდეს (ერთხელ, StrictMode-ის მეორე გაშვების გარეშე)
+  const historyReady = useRef(false)
   useEffect(() => {
-    window.history.replaceState({ depth: 0 }, '', urlFor(initialPath))
+    if (historyReady.current) return
+    historyReady.current = true
+    stackRef.current.forEach((e, depth) =>
+      window.history[depth ? 'pushState' : 'replaceState']({ depth, from: e.from }, '', urlFor(e.path, initialPath)),
+    )
   }, [initialPath])
 
   const navigate = useCallback((path, { from = 'right', replace = false } = {}) => {
     if (animRef.current) return // ანიმაციის დროს მეორე გადასვლა (მაგ. ორმაგი სვაიპი) იგნორირდება
     const depth = replace ? 0 : stackRef.current.length
-    window.history[replace ? 'replaceState' : 'pushState']({ depth, from }, '', urlFor(path))
+    window.history[replace ? 'replaceState' : 'pushState']({ depth, from }, '', urlFor(path, initialPath))
     const next = entry(path, from)
     setStack((s) => [...s, next])
     setAnim({ type: 'push', key: next.key, from, replace })
-  }, [])
+  }, [initialPath])
 
   const back = useCallback(() => {
     if (stackRef.current.length > 1 && !animRef.current) window.history.back()
   }, [])
 
   const reset = useCallback(() => {
-    window.history.replaceState({ depth: 0 }, '', urlFor(initialPath))
+    window.history.replaceState({ depth: 0 }, '', urlFor(initialPath, initialPath))
     setAnim(null)
     setStack([entry(initialPath)])
   }, [initialPath])
@@ -69,14 +88,14 @@ export function Navigator({ routes, initialPath = '/' }) {
         setStack(s.slice(0, Math.max(depth, 0) + 1))
         setAnim({ type: 'pop', key: s[Math.max(depth, 0)].key, leaving, from: leaving.from })
       } else if (depth > top) {
-        const next = entry(currentPath(), e.state?.from)
+        const next = entry(pathFromUrl(initialPath), e.state?.from)
         setStack([...s, next])
         setAnim({ type: 'push', key: next.key, from: next.from })
       }
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
-  }, [])
+  }, [initialPath])
 
   const [rootEl, setRootEl] = useState(null)
   useHiddenReset(rootEl, reset)
