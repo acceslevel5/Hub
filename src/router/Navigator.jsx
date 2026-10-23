@@ -41,10 +41,10 @@ const stackFromUrl = (routes, initialPath, enterFrom, rootPaths) => {
   return [entry('/'), entry(path, enterFrom[path])]
 }
 
-// Useberry ახალ ეკრანს (NAVIGATION) DOM-ში ნოუდის დამატებისას ამოწმებს; replaceUrl-ის შემდეგ უხილავ comment-ს ვამატებთ
+// Useberry ახალ ეკრანს (NAVIGATION) მხოლოდ DOM-ში ნოუდის დამატებისას ამოწმებს; URL-ის ყოველი ცვლილების შემდეგ უხილავ comment-ს ვამატებთ
 const pingUseberry = () => document.body.appendChild(document.createComment('screen')).remove()
 
-export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths = [] }) {
+export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths = [], titles = {} }) {
   const [stack, setStack] = useState(() => stackFromUrl(routes, initialPath, enterFrom, rootPaths))
   const [anim, setAnim] = useState(null) // { type: 'push' | 'pop', key, leaving? }
   const stackRef = useRef(stack)
@@ -75,9 +75,10 @@ export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths
   const replaceUrl = useCallback(
     (path) => {
       window.history.replaceState(window.history.state, '', urlFor(path, initialPath))
+      if (titles[path]) document.title = titles[path]
       pingUseberry()
     },
-    [initialPath],
+    [initialPath, titles],
   )
 
   const back = useCallback(() => {
@@ -127,6 +128,14 @@ export function Navigator({ routes, initialPath = '/', enterFrom = {}, rootPaths
 
   const topIndex = stack.length - 1
   const topKey = stack[topIndex].key
+
+  // სათაური URL-იდან (მაგ. ტურის შემდეგ home-tour ფენას home URL აქვს), layout effect-ში —
+  // DOM-ის ცვლილებისთანავე, რადგან Useberry NAVIGATION-ს სათაურით აგზავნის
+  useLayoutEffect(() => {
+    const title = titles[pathFromUrl(initialPath)]
+    if (title) document.title = title
+    pingUseberry() // „უკან"-ისას DOM-ში ნოუდი არ ემატება და Useberry დაბრუნებას ვერ ამჩნევს
+  }, [topKey, titles, initialPath])
 
   /*
    * სქროლი: აქტიური ეკრანი window-ით სქროლავს, დანარჩენები — შიდა [data-scroll] ბლოკით.
